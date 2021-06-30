@@ -1,13 +1,16 @@
+import { hash } from 'bcryptjs';
 import User from '../models/User';
 
 class UserController{
     async createUser(req, res){
+
         const userExists = await User.findOne({
             where: {email: req.body.email},
         });
         if(userExists){
-            return res.status(400).json({error: 'Usuário já existe.'})
+            return res.status(400).json({error: 'Usuário já existe.'});
         }
+
         const {id, name, email} = await User.create(req.body);
         return res.json({
             id,
